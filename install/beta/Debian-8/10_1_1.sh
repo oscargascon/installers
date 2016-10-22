@@ -47,7 +47,7 @@ OS=$(uname -s)
   VER=$(uname -r)
 fi
 echo "Detected : $OS $VER $BITS"
-if [ "$OS" = "Debian" ] && [ "$VER" = "8" ] || [ "$VER" = "8.0" ] || [ "$VER" = "8.1" ] || [ "$VER" = "8.2" ] || [ "$VER" = "8.3" ] || [ "$VER" = "8.4" ] || [ "$VER" = "8.5" ] ; then
+if [ "$OS" = "Debian" ] && [ "$VER" = "8" ] || [ "$VER" = "8.0" ] || [ "$VER" = "8.1" ] || [ "$VER" = "8.2" ] || [ "$VER" = "8.3" ] || [ "$VER" = "8.4" ] || [ "$VER" = "8.5" ] || [ "$VER" = "8.6" ]; then
 echo "Ok."
 else
 echo "Sorry, this installer only supports the installation of ZPanel on Debian 8."
@@ -74,7 +74,7 @@ passwordgen() {
 echo -e ""
 echo -e "##############################################################"
 echo -e "# Welcome to the Official ZPanelX Installer for Debian #"
-echo -e "# Server 7 #"
+echo -e "# Server 8 #"
 echo -e "# #"
 echo -e "# Please make sure your VPS provider hasn't pre-installed #"
 echo -e "# any packages required by ZPanelX. #"
@@ -144,30 +144,6 @@ dpkg --get-selections
 
 # We need to update the enabled Aptitude repositories
 echo -ne "\nUpdating Aptitude Repos: " >/dev/tty
-#if grep -Fxq "deb-src" /etc/apt/sources.list
-#then
-# echo "sources list up-to-date"
-#else
-# echo "deb-src http://archive.ubuntu.com/ubuntu precise main" >> /etc/apt/sources.list
-# echo "deb-src http://archive.ubuntu.com/ubuntu precise-updates main" >> /etc/apt/sources.list
-# echo "deb-src http://security.ubuntu.com/ubuntu precise-security main" >> /etc/apt/sources.list
-# echo "deb-src http://archive.ubuntu.com/ubuntu precise universe" >> /etc/apt/sources.list
-# echo "deb-src http://archive.ubuntu.com/ubuntu precise-updates universe" >> /etc/apt/sources.list
-#fi
-#to avoid compatibility problems have ppa and removes deposits in the outcry over
- mkdir -p "/etc/apt/sources.list.d.save"
-        cp -R "/etc/apt/sources.list.d/*" "/etc/apt/sources.list.d.save" &> /dev/null
-        rm -rf "/etc/apt/sources.list/*"
-        cp "/etc/apt/sources.list" "/etc/apt/sources.list.save"
-cat > /etc/apt/sources.list <<EOF
-#Dépots main contrib non-free
-deb http://http.debian.net/debian wheezy main contrib non-free
-deb-src http://http.debian.net/debian wheezy main contrib non-free
-deb http://http.debian.net/debian wheezy-updates main contrib non-free
-deb-src http://http.debian.net/debian wheezy-updates main contrib non-free
-deb http://security.debian.org/ wheezy/updates main contrib non-free
-deb-src http://security.debian.org/ wheezy/updates main contrib non-free
-EOF
 
 apt-get -yqq update &>/dev/null
 
@@ -190,7 +166,7 @@ apt-get dist-upgrade -yqq
 # Install required software and dependencies required by ZPanel.
 # We disable the DPKG prompts before we run the software install to enable fully automated install.
 export DEBIAN_FRONTEND=noninteractive
-apt-get install -y mysql-server mysql-server apache2 libapache2-mod-php5 libapache2-mod-bw php5-common php5-cli php5-mysql php5-gd php5-mcrypt php5-curl php-pear php5-imap php5-xmlrpc php5-xsl db4.7-util zip webalizer build-essential bash-completion dovecot-mysql dovecot-imapd dovecot-pop3d dovecot-common dovecot-managesieved dovecot-lmtpd postfix postfix-mysql libsasl2-modules-sql libsasl2-modules proftpd-mod-mysql bind9 bind9utils
+apt-get install -y mysql-server mysql-server apache2 libapache2-mod-php5 libapache2-mod-bw php5-common php5-cli php5-mysql php5-gd php5-mcrypt php5-curl php-pear php5-imap php5-xmlrpc php5-xsl db5.3-util zip webalizer build-essential bash-completion dovecot-mysql dovecot-imapd dovecot-pop3d dovecot-common dovecot-managesieved dovecot-lmtpd postfix postfix-mysql libsasl2-modules-sql libsasl2-modules proftpd-mod-mysql bind9 bind9utils
 
 # Generation of random passwords
 password=`passwordgen`;
